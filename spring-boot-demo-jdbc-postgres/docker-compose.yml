@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my-postgres
+    networks: 
+      - data-newtwork
+    ports:
+      - 5532:5432
+    volumes:
+      - type: bind
+        source: /c/tmp/volume/data
+        target: /etc/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - PGDATA=/etc/data
+  mongo:
+    image: mongo:latest
+    container_name: my-mongo
+    networks: 
+      - data-newtwork
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - 28017:27017
+
+networks: 
+  data-newtwork:
+    name: data-newtwork
+    driver: bridge
+  
